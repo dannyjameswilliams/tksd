@@ -49,6 +49,7 @@ python results/usa_benchmark.py
 
 
 **Figure 3**
+
 In this example, you can modify the argument to the script to be either the l2 ball, or the l1 ball. For example,
 ```
 python results/dimension_benchmark.py 2
