@@ -16,7 +16,7 @@ This work was created using Python 3.8.13. We have included a `requirements.txt`
 ```bash
 conda create -y --name tksd python=3.8.13
 conda activate tksd
-conda install --file requirements.txt 
+conda install -y --file requirements.txt 
 pip install git+https://github.com/wittawatj/kernel-gof.git
 ```
 
