@@ -27,4 +27,4 @@ for i, n in enumerate(nseq[:4]):
     ax[i].set_ylim(0, 1)
 fig.tight_layout()
 
-plt.savefig("decreasing_epsilon.pdf")
+plt.show()

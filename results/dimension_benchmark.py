@@ -6,7 +6,7 @@ from autograd import elementwise_grad as grad
 from tqdm.auto import tqdm
 
 import sys
-import os
+import osconda 
 sys.path.append(os.getcwd())
 
 from library.truncsm import truncsm_l2, truncsm_proj, truncsm_fixedg, polydist_l1ball
