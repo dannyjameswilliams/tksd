@@ -1,7 +1,6 @@
 import autograd.numpy as np
 import matplotlib.pyplot as plt
 import time
-import pathos.multiprocessing as mp
 
 from autograd import elementwise_grad as grad
 from tqdm.auto import tqdm
