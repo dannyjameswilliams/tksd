@@ -5,6 +5,11 @@ This python repo is intended to reproduce the results from the _Approximate Stei
 
 ## Installation and Requirements
 
+First, you must clone this environment to your working directory, using
+```
+git clone https://github.com/dannyjameswilliams/tksd.git 
+```
+
 This work was created using Python 3.8.13. We have included a `requirements.txt` file, made from [pipreqs](https://pypi.org/project/pipreqs/) on this workspace. We recommend if you are going to use this repo, to make a virtual environment. For example, with [Anaconda](https://www.anaconda.com/), you can do the following:
 
 ```bash
