@@ -20,7 +20,7 @@ conda install -y --file requirements.txt
 pip install git+https://github.com/wittawatj/kernel-gof.git
 ```
 
-This will create a `conda` virtual environment and install all the packages necessary. We also give credit to [the kgof](https://github.com/wittawatj/kernel-gof) package, from the [A Linear-Time Kernel Goodness-of-Fit Test](https://proceedings.neurips.cc/paper/2017/file/979d472a84804b9f647bc185a877a8b5-Paper.pdf) paper, for fast computation of Gram matrices.
+This will create a `conda` virtual environment called `tksd`, and install all the packages necessary. We also give credit to [the kgof](https://github.com/wittawatj/kernel-gof) package, from the [A Linear-Time Kernel Goodness-of-Fit Test](https://proceedings.neurips.cc/paper/2017/file/979d472a84804b9f647bc185a877a8b5-Paper.pdf) paper, for fast computation of Gram matrices.
 
 Additionally, you could use `pip` to install it to any environment, not just a virtual one
 
@@ -49,9 +49,16 @@ python results/usa_benchmark.py
 
 
 **Figure 3**
+
+In this example, you can modify the argument to the script to be either the l2 ball, or the l1 ball. For example,
 ```
-python results/dimension_benchmark.py
+python results/dimension_benchmark.py 2
 ```
+will run the experiment for the l2 ball, and
+```
+python results/dimension_benchmark.py 1
+```
+will run it for the l1 ball.
 
 ### Appendix
 
