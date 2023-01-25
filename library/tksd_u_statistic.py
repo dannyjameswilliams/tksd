@@ -48,7 +48,7 @@ def tksd(X, Px, dlogp, bandwidth=None, theta_init=None, plot_g=False):
     K, K_y, K_xy, Kyt, Kyt_x, Kxtyt = kgof_make_Ks_all(X, Px, bandwidth)
     Kxtyt_inv = cholesky_inv(Kxtyt, 1e-3)
 
-    # for U-statistic, i\neq j, so make diagonal entries zero for samples n
+    # for U-statistic, i \neq j, so make diagonal entries zero for samples n
     np.fill_diagonal(K, 0)
     np.fill_diagonal(K_xy, 0)
     for l in range(d):
@@ -60,7 +60,6 @@ def tksd(X, Px, dlogp, bandwidth=None, theta_init=None, plot_g=False):
     # Initial conditions are default random
     if theta_init is None:
         theta_init = np.random.randn(d)
-    n_p = len(theta_init)
 
     # Objective as a function of theta only
     obj0 = lambda par: obj_vec(X, par, dlogp, K, K_y, K_xy0, Kyt, Kyt_x, Kxtyt_inv)
@@ -74,9 +73,7 @@ def tksd(X, Px, dlogp, bandwidth=None, theta_init=None, plot_g=False):
     if plot_g:
         from library.tksd_g import g_
         g = "must be d<=2 for plot_g=True"
-        if d == 1:
-            g = g_(X, Px, dlogp, theta, K, K_y, Kyt, Kyt_x, Kxtyt, Kxtyt_inv, bandwidth);
-        if d == 2:
+        if d <= 2:
             g = g_(X, Px, dlogp, theta, K, K_y, Kyt, Kyt_x, Kxtyt, Kxtyt_inv, bandwidth);
         return theta, g
     else:

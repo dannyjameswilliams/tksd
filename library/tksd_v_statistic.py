@@ -70,9 +70,7 @@ def tksd(X, Px, dlogp, bandwidth=None, theta_init=None, plot_g = False):
     if plot_g:
         from library.tksd_g import g_
         g = "must be d<=2 for plot_g=True"
-        if d == 1:
-            g = g_(X, Px, dlogp, theta, K, K_y, Kyt, Kyt_x, Kxtyt, Kxtyt_inv, bandwidth);
-        if d == 2:
+        if d <= 2:
             g = g_(X, Px, dlogp, theta, K, K_y, Kyt, Kyt_x, Kxtyt, Kxtyt_inv, bandwidth);
         return theta, g
     else:
