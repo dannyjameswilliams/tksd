@@ -5,6 +5,13 @@ import pandas as pd
 from shapely.geometry.polygon import Polygon
 from shapely.geometry import Point
 
+plt.style.use('seaborn-whitegrid')
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "Helvetica",
+    "font.size": 18
+})
+
 # Re-order the boundary points clockwise from an estimated centroid
 def organise_poly(Px):
     centroid = [-100, 40]
@@ -105,11 +112,12 @@ for i in range(3):
 
 # Plot legend separately
 ax[i].scatter([], [], c="k", s=10, label="$X$")
-ax[i].scatter([], [], c="#0e89cf", s=20, label="$\widetilde{\partial V}_m$")
+ax[i].scatter([], [], c="#0e89cf", s=20, label="$\widetilde{\partial V}$")
 ax[i].legend(
     loc='upper right', bbox_to_anchor=(1.48, 1.1),
     frameon=True, handletextpad=0.1
 )
 
+plt.savefig(f"usa_boundary.pdf", bbox_inches="tight")
 plt.subplots_adjust(wspace=.05, hspace=0)
 plt.show()

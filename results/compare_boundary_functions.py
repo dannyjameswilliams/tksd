@@ -119,5 +119,3 @@ if __name__ == "__main__":
     axes[1].text(bdksd_theta, 0.22, r"$\hat{\mu}$", c="m", fontdict={"size":26})
 
     plt.show()
-
-    # plt.savefig("different_g_mu0_75.pdf")

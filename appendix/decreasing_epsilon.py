@@ -38,5 +38,4 @@ ax[0].text(
     transform=ax[0].transAxes
 )
 
-plt.savefig(f"epsilon_d{d}.pdf", bbox_inches="tight")
 plt.show()
