@@ -15,7 +15,7 @@ import os
 sys.path.append(os.getcwd())
 
 from library.truncsm import truncsm_fixedg
-from library.tksd import tksd
+from library.tksd_v_statistic import tksd
 
 plt.style.use('seaborn-whitegrid')
 plt.rcParams.update({
@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
     # Set up variables
     nseq    = np.arange(300, 2100, 300)
-    ntrials = 32
+    ntrials = 256
     output  = np.empty((ntrials, len(nseq), 4))
 
     # For each value of n, independently run ntrials experiments to average
