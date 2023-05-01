@@ -30,25 +30,19 @@ The following lines will reproduce the plots presented in the paper.
 
 ### Main Text
 
-**Figure 1**
-```
-python results/compare_boundary_functions.py
-```
-
-
-**Figure 2 (top)**
+**Figure 1 (top)**
 ```
 python results/usa_boundary.py
 ```
 
 
-**Figure 2 (bottom)**
+**Figure 1 (bottom)**
 ```
 python results/usa_benchmark.py
 ```
 
 
-**Figure 3**
+**Figure 2**
 
 In this example, you can modify the argument to the script to be either the $\ell_2$ ball, or the $\ell_1$ ball. For example,
 ```
@@ -62,17 +56,39 @@ will run it for the $\ell_1$ ball. Note that running for the $\ell_1$ ball will 
 
 ### Appendix
 
-**Figure 4**
+**Figure 3**
 ```
 python appendix/g_convergence.py
 ```
 
-**Figure 5**
+**Figure 4**
 ```
 python appendix/decreasing_epsilon.py
 ```
 
+**Figure 5**
+```
+python appendix/consistency.py
+```
+
 **Figure 6**
+```
+python appendix/mixture.py
+```
+
+**Figure 7**
+```
+python appendix/regression.py
+```
+
+**Figure 8 and 9**
+```
+python appendix/boundary_distribution.py
+```
+
+**Figure 10**
 ```
 python appendix/percentage_truncation.py
 ```
+
+
