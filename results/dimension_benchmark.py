@@ -167,19 +167,20 @@ if __name__ == "__main__":
     ax[0].set_xlabel("$d$")
     ax[0].set_ylabel("$\|{\hat{\mu}} - {\mu}^*\|_2$")
 
-    ax[1].errorbar(dlist+0.1, tmeans[:, 0], tsds[:, 0], fmt = "-^", c="r", label="TruncSM (exact)", lw=1)
-    ax[1].errorbar(dlist+0.2, tmeans[:, 1], tsds[:, 1], fmt = "-v", c="#f58b00", label="TruncSM (approximate)", lw=1)
-    ax[1].errorbar(dlist+0.3, tmeans[:, 2], tsds[:, 2], fmt = "-s", c="g", label="bd-KSD (exact)", lw=1)
-    ax[1].errorbar(dlist+0.4, tmeans[:, 3], tsds[:, 3], fmt = "-d", c="#03fc30", label="bd-KSD (approximate)", lw=1)
-    ax[1].errorbar(dlist, tmeans[:, 4], tsds[:, 4], fmt = "-o", c="b", label="TKSD", lw=1)
+    ax[1].errorbar(dlist+0.1, tmeans[:, 0], tsds[:, 0], fmt = "-^", c="r", label="\\textbf{TruncSM (exact)}", lw=1)
+    ax[1].errorbar(dlist+0.2, tmeans[:, 1], tsds[:, 1], fmt = "-v", c="#f58b00", label="\\textbf{TruncSM (approximate)}", lw=1)
+    ax[1].errorbar(dlist+0.3, tmeans[:, 2], tsds[:, 2], fmt = "-s", c="g", label="\\textbf{bd-KSD (exact)}", lw=1)
+    ax[1].errorbar(dlist+0.4, tmeans[:, 3], tsds[:, 3], fmt = "-d", c="#03fc30", label="\\textbf{bd-KSD (approximate)}", lw=1)
+    ax[1].errorbar(dlist, tmeans[:, 4], tsds[:, 4], fmt = "-o", c="b", label="\\textbf{TKSD}", lw=1)
 
     ax[1].set_xticks(dlist)
     ax[1].set_xlabel("$d$")
     ax[1].set_ylabel("Runtime (seconds)")
-    ax[1].set_ylim(0, ax[1].get_ylim()[1]+0.2)
+    ax[1].set_ylim(0, ax[1].get_ylim()[1]+0.22)
     ax[1].legend(loc="upper left");
 
-    fig.suptitle(f"$\ell_{q}$ ball")
+    fig.suptitle(f"$\ell_{q}$ ball", fontsize = 28)
 
+    plt.savefig(f"l{q}_d_approximate_bigfont.pdf", bbox_inches="tight")
     plt.subplots_adjust(wspace=.3, hspace=0)
     plt.show()

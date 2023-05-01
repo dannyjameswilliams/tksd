@@ -19,7 +19,7 @@ plt.rcParams.update({
     "text.usetex": True,
     "font.family": "serif",
     'text.latex.preamble' : r'\usepackage{amsmath}',
-    "font.size": 14
+    "font.size": 18
 })
 
 # Re-order the boundary points clockwise from an estimated centroid
@@ -151,9 +151,11 @@ if __name__ == "__main__":
    
     # Plot 
     fig, ax = plt.subplots(1, 1, figsize=(8, 3.5))
-    ax.errorbar(mseq+2, means[:,0], sds[:,0], fmt="-o", lw=1, c = "b", label="TKSD")
-    ax.errorbar(mseq, means[:,1], sds[:,1], fmt="-^",  lw=1, c = "r", label="TruncSM")
+    ax.errorbar(mseq+2, means[:,0], sds[:,0], fmt="-o", lw=1, c = "b", label="\\textbf{TKSD}")
+    ax.errorbar(mseq, means[:,1], sds[:,1], fmt="-^",  lw=1, c = "r", label="\\textbf{TruncSM}")
     ax.set_ylabel("$\| {\hat{\mu}} - \mu^* \|_2$")
     ax.set_xlabel("$m$")
     ax.legend();
+
+    # plt.savefig(f"usa_bench_approximate_bigfont.pdf", bbox_inches="tight")
     plt.show()

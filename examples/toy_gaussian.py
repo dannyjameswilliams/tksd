@@ -3,6 +3,10 @@ from autograd import elementwise_grad as grad
 
 import time
 
+import sys
+import os
+sys.path.append(os.getcwd())
+
 from library.truncsm import truncsm_l1, truncsm_l2
 from library.bdksd import bdKSD_l1, bdKSD_l2
 
@@ -10,7 +14,7 @@ from library.bdksd import bdKSD_l1, bdKSD_l2
 from library.tksd_v_statistic import tksd
 # from library.tksd_u_statistic import tksd
 
-def simulate(n=30, d=2, m=10, B=1, seed=2, q=2, mu = None, sigma=1):
+def simulate(n=30, d=2, m=10, r=1, seed=2, q=2, mu = None, sigma=1):
 
     np.random.seed(seed)
     if mu is None:
@@ -22,7 +26,7 @@ def simulate(n=30, d=2, m=10, B=1, seed=2, q=2, mu = None, sigma=1):
 
         Xin  = np.random.multivariate_normal(mu, Sigma, 100000)
         Xall = np.vstack((Xall, Xin))
-        Xint = Xin[np.linalg.norm(Xin, q, 1) < B, :]
+        Xint = Xin[np.linalg.norm(Xin, q, 1) < r, :]
         Xt = np.vstack((Xt, Xint))
 
     Xt = Xt[:n, :]
@@ -31,7 +35,7 @@ def simulate(n=30, d=2, m=10, B=1, seed=2, q=2, mu = None, sigma=1):
         Px = np.array([[-1.], [1.]])
     else:
         Px = np.random.multivariate_normal(np.zeros(d), np.identity(d), m)
-        Px = B*(Px/(np.linalg.norm(Px, q, 1)[:, None]))
+        Px = r*(Px/(np.linalg.norm(Px, q, 1)[:, None]))
         
     return Xt, Px
 
@@ -52,13 +56,13 @@ if __name__ == "__main__":
     plot_g = False
 
     if q == 1:
-        B = d
+        r = d
     if q == 2:
-        B = d**0.53
+        r = d**0.53
     
     # Simulate data
     mu = np.ones(d)*0.5
-    X, Px = simulate(n=n, d=d, m=m, B=B, q=q, seed=seed, mu=mu, sigma=sigma)
+    X, Px = simulate(n=n, d=d, m=m, r=r, q=q, seed=seed, mu=mu, sigma=sigma)
     
     # Set up parametric form of score function
     logp  = lambda x, theta: -((x - theta[:d].flatten())**2).sum(1)/(2)
@@ -69,16 +73,16 @@ if __name__ == "__main__":
     
     t = time.perf_counter()
     if q == 2:
-        theta_tsm = truncsm_l2(X, dlogp, B=B, theta_init = init)
+        theta_tsm = truncsm_l2(X, dlogp, r=r, theta_init = init)
     elif q == 1:
-        theta_tsm = truncsm_l1(X, dlogp, B=B, theta_init = init)
+        theta_tsm = truncsm_l1(X, dlogp, r=r, theta_init = init)
     print(f"TruncSM: {time.perf_counter()-t} seconds")
     
     t = time.perf_counter()
     if q == 2:
-        theta_bd = bdKSD_l2(X, dlogp, B=B, theta_init = init)
+        theta_bd = bdKSD_l2(X, dlogp, r=r, theta_init = init)
     elif q == 1:
-        theta_bd = bdKSD_l1(X, dlogp, B=B, theta_init = init)
+        theta_bd = bdKSD_l1(X, dlogp, r=r, theta_init = init)
     print(f"bdKSD: {time.perf_counter()-t} seconds")
 
     t = time.perf_counter()

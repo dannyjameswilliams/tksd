@@ -104,7 +104,7 @@ for i in range(3):
 
     ax[i].scatter(Xt[:,0], Xt[:,1], s=0.3, c="k")
     ax[i].scatter(bounds_sub[:,0], bounds_sub[:,1], s=6, c="#0e89cf")
-    ax[i].set_title(f"$m={mseq[i]}$")
+    ax[i].set_title(f"$m={mseq[i]}$", fontsize=22)
     ax[i].set_xlim(-126, -68)
     ax[i].set_ylim(23, 51)
     if i > 0:
@@ -114,8 +114,8 @@ for i in range(3):
 ax[i].scatter([], [], c="k", s=10, label="$X$")
 ax[i].scatter([], [], c="#0e89cf", s=20, label="$\widetilde{\partial V}$")
 ax[i].legend(
-    loc='upper right', bbox_to_anchor=(1.48, 1.1),
-    frameon=True, handletextpad=0.1
+    loc='upper right', bbox_to_anchor=(1.73, 1.1),
+    frameon=True, handletextpad=0.1, fontsize=22
 )
 
 plt.savefig(f"usa_boundary.pdf", bbox_inches="tight")

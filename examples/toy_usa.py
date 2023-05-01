@@ -2,12 +2,15 @@ import autograd.numpy as np
 from autograd import elementwise_grad as grad
 
 import pandas as pd # for reading CSV
-
 import matplotlib.pyplot as plt
 
 # for proper polygon/point geometry
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+
+import sys
+import os
+sys.path.append(os.getcwd())
 
 from library.truncsm import truncsm_proj
 
@@ -91,9 +94,11 @@ if __name__ == "__main__":
     np.random.seed(1) # random seed of experiment
 
     # Read/sample data, organise with polygon ordering
-    bounds = pd.read_csv("data/america_bounds.csv").values[:, 1:]
+    bounds   = pd.read_csv("data/america_bounds.csv").values[:, 1:]
     usa_poly = Polygon(organise_poly(bounds))
-    X  = np.random.multivariate_normal(mu, np.eye(2)*sigma, 1000)
+
+    # Simulate full dataset    
+    X = np.random.multivariate_normal(mu, np.eye(2)*sigma, 1000)
 
     # Rejection sampling with Polygon to truncate
     Xt = np.zeros((0, 2))
@@ -108,7 +113,7 @@ if __name__ == "__main__":
     # Estimate with TKSD/TruncSM
     init = Xt.mean(0) # good initial guess of mu (truncated mean)
     theta_tksd = tksd(Xt, bounds[:m, :], dlogp, theta_init=init)
-    theta_tsm = truncsm_proj(Xt, bounds[:m, :], dlogp, theta_init=init)
+    theta_tsm  = truncsm_proj(Xt, bounds[:m, :], dlogp, theta_init=init)
 
 
     # Plot
@@ -123,6 +128,8 @@ if __name__ == "__main__":
     plt.scatter(theta_tsm[0], theta_tsm[1], label = "TruncSM", c="r", s=100)
     plt.scatter(mu[0], mu[1], label = "True", c="y", marker="*", s=100)
     plt.legend()
+
+    plt.show()
 
 
     print(f"TKSD error: {np.sqrt(np.sum((theta_tksd - mu)**2))}")
