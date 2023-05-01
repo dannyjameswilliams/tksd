@@ -1,6 +1,6 @@
-# Approximate Stein Discrepancies for Truncated Density Estimation
+# Approximate Stein Classes for Truncated Density Estimation
 
-This python repo is intended to reproduce the results from the _Approximate Stein Discrepancies for Truncated Density Estimation_ paper. Within it you will find examples of the TKSD method for basic scenarios, and scripts for reproducing plots found in the paper.
+This python repo is intended to reproduce the results from the _Approximate Stein Classes for Truncated Density Estimation_ paper. Within it you will find examples of the TKSD method for basic scenarios, and scripts for reproducing plots found in the paper.
 
 
 ## Installation and Requirements
@@ -50,7 +50,7 @@ python results/usa_benchmark.py
 
 **Figure 3**
 
-In this example, you can modify the argument to the script to be either the l2 ball, or the l1 ball. For example,
+In this example, you can modify the argument to the script to be either the $\ell_2$ ball, or the $\ell_1$ ball. For example,
 ```
 python results/dimension_benchmark.py 2
 ```
@@ -58,7 +58,7 @@ will run the experiment for the l2 ball, and
 ```
 python results/dimension_benchmark.py 1
 ```
-will run it for the l1 ball.
+will run it for the $\ell_1$ ball. Note that running for the $\ell_1$ ball will take a while.
 
 ### Appendix
 
