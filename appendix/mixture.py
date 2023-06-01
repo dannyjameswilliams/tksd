@@ -209,7 +209,7 @@ if __name__ == "__main__":
     # For each value of n, independently run ntrials experiments to average
     for ni, n in tqdm(enumerate(nseq), total=len(nseq)):
         for seed in range(ntrials):
-            output[seed, ni, :] = run_once(int(n), d, 50, 2, seed)
+            output[seed, ni, :] = run_once(int(n), d, m, 2, seed)
 
     # Get errors and times from output
     errors = output[:, :, :2]
