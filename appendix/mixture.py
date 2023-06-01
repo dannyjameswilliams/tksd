@@ -247,27 +247,39 @@ if __name__ == "__main__":
     # Set up variables
     ntrials    = 64
     mixtureseq = np.array([2, 3, 4])
-    errors     = np.empty((ntrials, 3, 2))
+    output     = np.empty((ntrials, len(mixtureseq), 4))
 
     # For each number of mixture modes, repeat experiment ntrials times
-    for i, num_mixture in enumerate(mixtureseq):
-        for seed in tqdm(range(ntrials)):
-            errors[seed, i, :] = run_once(n, 2, m, num_mixture, seed)
+    for i, num_mixture in tqdm(enumerate(mixtureseq), total = len(mixtureseq)):
+        for seed in range(ntrials):
+            output[seed, i, :] = run_once(n, 2, m, num_mixture, seed)
     
     # Take mean and standard error to plot
-    means = errors.mean(0)
-    sds   = errors.std(0)/np.sqrt(ntrials)
+    errors = output[:, :, :2]
+    times  = output[:, :, 2:]
+
+    emeans = errors.mean(0)
+    esds   = errors.std(0)/np.sqrt(ntrials)
+    tmeans = times.mean(0)
+    tsds   = times.std(0)/np.sqrt(ntrials)
 
     # Plot
-    fig, ax = plt.subplots(1, 1, figsize=(6, 4))
-    ax.errorbar(mixtureseq,      means[:, 0], sds[:, 0], fmt = "-o", c="b", label="\\textbf{TKSD}", lw=1)
-    ax.errorbar(mixtureseq+0.1,  means[:, 1], sds[:, 1], fmt = "-^", c="r", label="\\textbf{TruncSM (exact)}", lw=1)
+    fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+    ax[0].errorbar(mixtureseq,      emeans[:, 0], esds[:, 0], fmt = "-o", c="b", label="\\textbf{TKSD}", lw=1)
+    ax[0].errorbar(mixtureseq+0.1,  emeans[:, 1], esds[:, 1], fmt = "-^", c="r", label="\\textbf{TruncSM (exact)}", lw=1)
 
-    ax.set_xticks(mixtureseq)
-    ax.set_xlabel("Number of Mixtures")
-    ax.set_ylabel("$\|{\hat{\mu}} - {\mu}^*\|_2$")
-    ax.legend(loc="upper left")
-    ax.set_ylim(errors.min()-0.4, errors.max()+0.8)
+    ax[0].set_xticks(mixtureseq)
+    ax[0].set_xlabel("Number of Mixtures")
+    ax[0].set_ylabel("$\|{\hat{\mu}} - {\mu}^*\|_2$")
+    
+    ax[1].errorbar(mixtureseq, tmeans[:, 0], tsds[:, 0], fmt = "-o", c="b", label="\\textbf{TKSD}", lw=1)
+    ax[1].errorbar(mixtureseq+0.1, tmeans[:, 1], tsds[:, 1], fmt = "-^", c="r", label="\\textbf{TruncSM (exact)}", lw=1)
+    
+    ax[1].set_xticks(mixtureseq)
+    ax[1].set_xlabel("Number of Mixtures")
+    ax[1].set_ylabel("Runtime (seconds)")
+    ax[1].set_ylim(0, ax[1].get_ylim()[1]+0.22)
+    ax[1].legend(loc="upper left");
 
     plt.subplots_adjust(wspace=.3, hspace=0)
     fig.tight_layout()
