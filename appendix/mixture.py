@@ -195,7 +195,8 @@ if __name__ == "__main__":
         ax[axi].set_title(f"{i} modes")
 
     ax[axi].legend(loc = "upper left", bbox_to_anchor=(1.03, 1.1),
-    frameon=True, handletextpad=0.1, fontsize=18);
+                   frameon=True, handletextpad=0.1, fontsize=18);
+    plt.show()
 
 
     # == Experiment 2: Run benchmark for n

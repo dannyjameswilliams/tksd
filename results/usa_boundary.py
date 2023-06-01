@@ -118,6 +118,5 @@ ax[i].legend(
     frameon=True, handletextpad=0.1, fontsize=22
 )
 
-plt.savefig(f"usa_boundary.pdf", bbox_inches="tight")
 plt.subplots_adjust(wspace=.05, hspace=0)
 plt.show()

@@ -181,6 +181,5 @@ if __name__ == "__main__":
 
     fig.suptitle(f"$\ell_{q}$ ball", fontsize = 28)
 
-    plt.savefig(f"l{q}_d_approximate_bigfont.pdf", bbox_inches="tight")
     plt.subplots_adjust(wspace=.3, hspace=0)
     plt.show()
