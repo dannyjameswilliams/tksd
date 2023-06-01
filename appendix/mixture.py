@@ -24,6 +24,7 @@ plt.rcParams.update({
     "font.size": 18
 })
 
+
 # Organise a polygon (given by a set of points) and re-organise the order 
 # to be clockwise around a given centroid
 def organise_poly(corners, centroid):
