@@ -52,7 +52,7 @@ will run the experiment for the l2 ball, and
 ```
 python results/dimension_benchmark.py 1
 ```
-will run it for the $\ell_1$ ball. Note that running for the $\ell_1$ ball will take a while.
+will run it for the $\ell_1$ ball. Note that running for the $\ell_1$ ball will take a while due to the computational complexity of calculating projections on the $\ell_1$ ball for the distance functions in _TruncSM_ and bdKSD. 
 
 ### Appendix
 
