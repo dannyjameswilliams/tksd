@@ -23,6 +23,7 @@ plt.rcParams.update({
     "font.family": "Serif",
     "font.size": 18
 })
+plt.rcParams['text.latex.preamble'] = r'\usepackage{amsmath}'
 
 # For simplicity in this experiment, keep self contained and rewrite
 # TKSD library functions (e.g. objective function)
@@ -155,14 +156,17 @@ def est_and_plot(y, X, trunc_val, seed=None, true_y=None, true_X=None):
         ax.scatter(true_X[:, 0].flatten(), true_y.flatten(), c="grey", s=10)
         ax.scatter(x, y.flatten(), c="k", s=20)
         x = true_X[:, 0].flatten()
-        ax.plot(x, [beta_tksd[0] + beta_tksd[1]*x0 for x0 in x], c="blue", label="\\textbf{TKSD}")
-        ax.plot(x, [beta_ls[0] + beta_ls[1]*x0 for x0 in x], c="red", label="\\textbf{MLE}")
+        ax.plot(x, [beta_tksd[0] + beta_tksd[1]*x0 for x0 in x], c="blue", label="TKSD")
+        ax.plot(x, [beta_ls[0] + beta_ls[1]*x0 for x0 in x], c="red", label="MLE")
     else:
         ax.scatter(x, y.flatten(), c="k", s=20)
         ax.plot(x, [beta_tksd[0] + beta_tksd[1]*x0 for x0 in x], c="blue", label="TKSD")
         ax.plot(x, [beta_ls[0] + beta_ls[1]*x0 for x0 in x], c="red", label="MLE")
     
-    plt.show()
+    leg = ax.legend(frameon=True, loc="lower right")
+    leg.get_frame().set_facecolor('white')
+
+    plt.show()    
 
     return beta_tksd, beta_ls
 
@@ -188,22 +192,26 @@ def do_simulated(n, seed):
     tksd_test_pred = beta_tksd[0] + X[~trunc, :] @ beta_tksd[1:, None]
     truncreg_test_pred  = beta_ls[0] + X[~trunc, :] @ beta_ls[1:, None]
 
-    # Log likelihoods on Gaussian
-    tksd_ll = norm.logpdf(y, loc=beta_tksd[0] + X @ beta_tksd[1:, None]).sum()
-    ls_ll = norm.logpdf(y, loc=beta_ls[0] + X @ beta_ls[1:, None]).sum()
+    # Log likelihoods on Gaussian (observed)
+    tksd_ll_obs = norm.logpdf(y[trunc, :], loc=beta_tksd[0] + X[trunc, :] @ beta_tksd[1:, None]).sum()
+    ls_ll_obs = norm.logpdf(y[trunc, :], loc=beta_ls[0] + X[trunc, :] @ beta_ls[1:, None]).sum()
+
+    # Log likelihoods on Gaussian (observed)
+    tksd_ll_unobs = norm.logpdf(y[~trunc, :], loc=beta_tksd[0] + X[~trunc, :] @ beta_tksd[1:, None]).sum()
+    ls_ll_unobs = norm.logpdf(y[~trunc, :], loc=beta_ls[0] + X[~trunc, :] @ beta_ls[1:, None]).sum()
 
     # Log likelihoods on truncated Gaussian
-    lp = beta_tksd[0] + Xt @ beta_tksd[1:, None]
-    tksd_ll_trunc = np.log(np.array([truncnormpdf(yt[i], lp[i], 1, trunc_point, np.inf) for i in range(len(Xt))])).sum()
-    lp = beta_ls[0] + Xt @ beta_ls[1:, None]
-    ls_ll_trunc   = np.log(np.array([truncnormpdf(yt[i], lp[i], 1, trunc_point, np.inf) for i in range(len(Xt))])).sum()
+    # lp = beta_tksd[0] + Xt @ beta_tksd[1:, None]
+    # tksd_ll_trunc = np.log(np.array([truncnormpdf(yt[i], lp[i], 1, trunc_point, np.inf) for i in range(len(Xt))])).sum()
+    # lp = beta_ls[0] + Xt @ beta_ls[1:, None]
+    # ls_ll_trunc   = np.log(np.array([truncnormpdf(yt[i], lp[i], 1, trunc_point, np.inf) for i in range(len(Xt))])).sum()
 
     # Return errors and likelihoods
     return (
         mean_squared_error(y[~trunc, :].flatten(), tksd_test_pred.flatten()),
         mean_squared_error(y[~trunc, :].flatten(), truncreg_test_pred.flatten()),
-        tksd_ll, ls_ll,
-        tksd_ll_trunc, ls_ll_trunc
+        tksd_ll_obs, ls_ll_obs,
+        tksd_ll_unobs, ls_ll_unobs
     )
 
 if __name__ == "__main__":
@@ -223,21 +231,22 @@ if __name__ == "__main__":
 
     # Plot histograms of results 
     fig, ax = plt.subplots(3, 1, figsize=(6, 7))
-    ax[0].hist(test_errors[:, 0], label="\\textbf{TKSD}", color="b", bins=15, alpha=0.75)
-    ax[0].hist(test_errors[:, 1], label="\\textbf{MLE}", color="r", bins=15, alpha=0.75)
-    ax[0].set_title("Test Error (on untruncated points)")
+    ax[0].hist(test_errors[:, 0], label="{TKSD}", color="b", bins=20, alpha=0.75)
+    ax[0].hist(test_errors[:, 1], label="{MLE}", color="r", bins=15, alpha=0.75)
+    ax[0].set_title("Error on unobserved points")
 
-    ax[1].hist(lls[:, 0], label="\\textbf{TKSD}", color="b", bins=15, alpha=0.75)
-    ax[1].hist(lls[:, 1], label="\\textbf{MLE}", color="r", bins=15, alpha=0.75)
-    ax[1].set_title("Log-likelihood $\mathcal{N}(\mu, 1)$ (full dataset)")
+    ax[1].hist(lls[:, 0], label="{TKSD}", color="b", bins=20, alpha=0.75)
+    ax[1].hist(lls[:, 1], label="{MLE}", color="r", bins=15, alpha=0.75)
+    ax[1].set_title("Log-likelihood $\mathcal{N}(\mu, 1)$ (observed)")
 
-    ax[2].hist(llst[:, 0], label="\\textbf{TKSD}", color="b", bins=15, alpha=0.75)
-    ax[2].hist(llst[:, 1], label="\\textbf{MLE}", color="r", bins=15, alpha=0.75)
-    ax[2].set_title("Log-likelihood Truncated $\mathcal{N}(\mu, 1)$")
+    ax[2].hist(llst[:, 0], label="{TKSD}", color="b", bins=20, alpha=0.75)
+    ax[2].hist(llst[:, 1], label="{MLE}", color="r", bins=15, alpha=0.75)
+    ax[2].set_title("Log-likelihood $\mathcal{N}(\mu, 1)$ (unobserved)")
 
     ax[2].set_ylim(0, ax[2].get_ylim()[1]+10)
     ax[2].set_xlim(ax[2].get_xlim()[0]-70, ax[2].get_xlim()[1])
-    ax[2].legend(loc="upper left")
+    leg = ax[2].legend(frameon=True, loc="lower left")
+    leg.get_frame().set_facecolor('white')
     fig.tight_layout()
     
     plt.show()
@@ -308,10 +317,10 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(1, 1, figsize=(6, 4))
     x = X[:, 0].flatten()
     ax.scatter(x, y.flatten(), c="k", s=20) 
-    ax.plot(x, [beta_tksd[0] + beta_tksd[1]*x0 for x0 in x], c="blue", label="\\textbf{TKSD}")
-    ax.plot(x, [beta_mle[0] + beta_mle[1]*x0 for x0 in x], c="red", label="\\textbf{MLE}")
-    ax.legend(loc="lower right")
-    
+    ax.plot(x, [beta_tksd[0] + beta_tksd[1]*x0 for x0 in x], c="blue", label="TKSD")
+    ax.plot(x, [beta_mle[0] + beta_mle[1]*x0 for x0 in x], c="red", label="MLE")
+    leg = ax.legend(frameon=True, loc="lower right")
+    leg.get_frame().set_facecolor('white')
     plt.show()
 
     
