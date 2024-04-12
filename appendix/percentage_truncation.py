@@ -56,12 +56,13 @@ def run(q, ax):
     for i, d in enumerate(dseq):
 
         mu = np.ones(d)*0.5
-        if q == 1:
-            mu = np.sqrt(mu)
+        # if q == 1:
+        #     mu = np.sqrt(mu)
 
-        r = d
+        if q == 1:
+            r = d**0.98
         if q == 2:
-            r = r**0.53
+            r = d**0.53
 
         for j in range((ntrials)):
             if q == 1:
@@ -76,18 +77,19 @@ def run(q, ax):
     
 if __name__ == "__main__":
 
-    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+    fig, ax = plt.subplots(1, 1, figsize=(5, 4))
     
-    run(1, ax[0])
-    ax[0].set_title("$\ell_1$ ball of size $d$")
-    ax[0].set_xlabel("$d$")
-    ax[0].set_ylabel("Mean \% of points  in ball vs overall")
-    ax[0].set_ylim(50, 60)
+    run(1, ax)
+    ax.set_xlabel("$d$")
+    ax.set_ylabel("Mean \% of points  in ball vs overall")
+    ax.set_ylim(58, 68)
 
-    run(2, ax[1])
-    ax[1].set_title("$\ell_2$ ball of size $d^{0.53}$")
-    ax[1].set_xlabel("$d$")
-    ax[1].set_ylim(40, 60)
+
+    fig, ax = plt.subplots(1, 1, figsize=(5, 4))
+    run(2, ax)
+    ax.set_ylabel("Mean \% of points  in ball vs overall")
+    ax.set_xlabel("$d$")
+    ax.set_ylim(40, 60)
 
     plt.subplots_adjust(wspace=0.1, hspace=0)
     plt.show()
